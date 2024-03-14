@@ -22,7 +22,7 @@ public class CentralBank implements ICentralBank
     }
 
     @Override
-    public IBank GetBank(String name)
+    public IBank GetBankByName(String name)
     {
         for (IBank bank : _bankFactory.GetAllBanks()) {
             if (bank.GetName().equals(name)) return bank;
@@ -32,8 +32,8 @@ public class CentralBank implements ICentralBank
     }
 
     @Override
-    public void CreateBank(String name, float commission, float iobDebit, float iobLowDeposit, float iobHighDeposit)
+    public void CreateBank(String name, float commission, float iobDebit, float iobLowDeposit, float iobHighDeposit, float doubtSum)
     {
-        _bankFactory.AddBank(new Bank(name, commission, iobDebit, iobLowDeposit, iobHighDeposit));
+        _bankFactory.AddBank(new Bank(name, commission, iobDebit, iobLowDeposit, iobHighDeposit, doubtSum));
     }
 }
