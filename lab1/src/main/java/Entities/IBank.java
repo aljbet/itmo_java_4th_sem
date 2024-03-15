@@ -10,6 +10,7 @@ public interface IBank
     void ChangeInterestOnBalanceLowDeposit(float iobLowDeposit);
     void ChangeInterestOnBalanceHighDeposit(float iobHighDeposit);
     void CreateClient(@NonNull String name, String address, String passport);
+    void CreateClient(@NonNull IClient client);
     void CreateCreditAccount(@NonNull String id, @NonNull IClient client);
     void CreateDebitAccount(@NonNull String id, @NonNull IClient client);
     void CreateDepositAccount(@NonNull String id, @NonNull IClient client, float startAmount);

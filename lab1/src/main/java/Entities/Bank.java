@@ -111,6 +111,12 @@ public class Bank implements IBank
     }
 
     @Override
+    public void CreateClient(@NonNull IClient client)
+    {
+        _clients.add(client);
+    }
+
+    @Override
     public void CreateCreditAccount(@NonNull String id, @NonNull IClient client)
     {
         _accounts.add(new CreditAccount(id, client, _creditLimit, _commission));

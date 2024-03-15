@@ -23,10 +23,10 @@ public class DefaultBankFactory implements IBankFactory
         Client ivan = new Client("Ivan Ivanov", "Moscow", "1234567890");
         Client petr = new Client("Petr Petrov", "", "");
 
-        sber.CreateClient(ivan.GetFullName(), ivan.GetAddress(), ivan.GetPassport());
-        sber.CreateClient(petr.GetFullName(), petr.GetAddress(), petr.GetPassport());
-        vtb.CreateClient(ivan.GetFullName(), ivan.GetAddress(), ivan.GetPassport());
-        vtb.CreateClient(petr.GetFullName(), petr.GetAddress(), petr.GetPassport());
+        sber.CreateClient(ivan);
+        sber.CreateClient(petr);
+        vtb.CreateClient(ivan);
+        vtb.CreateClient(petr);
 
         sber.CreateCreditAccount("i_cr_sber", ivan);
         sber.CreateDebitAccount("p_deb_sber", petr);
