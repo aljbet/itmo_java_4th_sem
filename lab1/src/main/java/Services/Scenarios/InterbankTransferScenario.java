@@ -22,7 +22,8 @@ public class InterbankTransferScenario implements IScenario
 
         context.get_textIO().getTextTerminal()
                 .printf(context.get_centralBank()
-                        .InterbankTransfer(context.get_currentBank().GetName(),
+                        .InterbankTransfer(context.get_currentClient(), context.get_currentBank().GetName(),
                                 sourceId, targetBank, targetId, amount));
+        MainActionChoiceScenario.Execute(context);
     }
 }

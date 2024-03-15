@@ -22,9 +22,9 @@ public class Bank implements IBank
     private float _interestOnBalanceHighDeposit;
     private final float _depositBorder;
     private final int _depositPeriod;
-    private List<IClient> _clients = new Vector<>();
-    private List<IClient> _subscribers = new Vector<>();
-    private List<IAccount> _accounts = new Vector<>();
+    private final List<IClient> _clients = new Vector<>();
+    private final List<IClient> _subscribers = new Vector<>();
+    private final List<IAccount> _accounts = new Vector<>();
 
     public Bank(
             @NonNull String name,
@@ -93,7 +93,7 @@ public class Bank implements IBank
     @Override
     public void ChangeInterestOnBalanceHighDeposit(float iobHighDeposit)
     {
-        _interestOnBalanceLowDeposit = iobHighDeposit;
+        _interestOnBalanceHighDeposit = iobHighDeposit;
         for (IAccount account : _accounts)
         {
             if (account instanceof DepositAccount && account.GetBalance() >= _depositBorder)

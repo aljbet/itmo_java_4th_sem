@@ -1,5 +1,6 @@
 package Services.Scenarios;
 
+import Entities.Accounts.IAccount;
 import Services.Context;
 import lombok.NonNull;
 
@@ -10,7 +11,8 @@ public class DepositScenario implements IScenario
         String id = context.get_textIO().newStringInputReader()
                 .read("Enter id: ");
 
-        if (context.get_currentBank().GetAccountById(id) == null)
+        IAccount account = context.get_currentBank().GetAccountById(id);
+        if (account == null || account.GetOwner() != context.get_currentClient())
         {
             context.get_textIO().getTextTerminal().printf("Failed. We couldn't find your account. Please try again.\n");
         }

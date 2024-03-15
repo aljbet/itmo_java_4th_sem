@@ -1,5 +1,6 @@
 package Services.Scenarios;
 
+import Entities.Accounts.IAccount;
 import Services.Context;
 import lombok.NonNull;
 
@@ -13,7 +14,9 @@ public class InBankTransferScenario implements IScenario
         String targetId = context.get_textIO().newStringInputReader()
                 .read("Enter target account id: ");
 
-        if (context.get_currentBank().GetAccountById(sourceId) == null)
+        IAccount sourceAccount = context.get_currentBank().GetAccountById(sourceId);
+
+        if (sourceAccount == null || sourceAccount.GetOwner() != context.get_currentClient())
         {
             context.get_textIO().getTextTerminal()
                     .printf("Failed. We couldn't find source account. Please try again.\n");

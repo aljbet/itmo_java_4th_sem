@@ -1,6 +1,7 @@
 package Services;
 
 import Entities.IBank;
+import Entities.IClient;
 import lombok.NonNull;
 
 import java.util.List;
@@ -18,10 +19,15 @@ public interface ICentralBank
                     int depositPeriod);
 
     void DepositDailyIOB();
+
     void DepositMonthlyIOB();
+
     List<String> GetAllBankNames();
+
     IBank GetBankByName(@NonNull String name);
-    String InterbankTransfer(@NonNull String sourceBankName,
+
+    String InterbankTransfer(@NonNull IClient client,
+                             @NonNull String sourceBankName,
                              @NonNull String sourceId,
                              @NonNull String targetBankName,
                              @NonNull String targetId,

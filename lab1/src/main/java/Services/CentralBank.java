@@ -3,6 +3,7 @@ package Services;
 import Entities.Accounts.IAccount;
 import Entities.Bank;
 import Entities.IBank;
+import Entities.IClient;
 import lombok.NonNull;
 
 import java.util.List;
@@ -63,7 +64,8 @@ public class CentralBank implements ICentralBank
     }
 
     @Override
-    public String InterbankTransfer(@NonNull String sourceBankName,
+    public String InterbankTransfer(@NonNull IClient client,
+                                    @NonNull String sourceBankName,
                                     @NonNull String sourceId,
                                     @NonNull String targetBankName,
                                     @NonNull String targetId,
@@ -75,7 +77,8 @@ public class CentralBank implements ICentralBank
         IAccount sourceAccount = sourceBank.GetAccountById(sourceId);
         IAccount targetAccount = targetBank.GetAccountById(targetId);
 
-        if (sourceAccount == null) return "Failed. We couldn't find source account. Please try again.\n";
+        if (sourceAccount == null || sourceAccount.GetOwner() != client)
+            return "Failed. We couldn't find source account. Please try again.\n";
         if (targetAccount == null) return "Failed. We couldn't find target account. Please try again.\n";
         String first = sourceAccount.Withdraw(amount);
         if (first.charAt(0) == 'F') return first;
