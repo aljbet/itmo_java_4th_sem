@@ -16,13 +16,14 @@ public class Bank implements IBank
     private final String _name;
     private final float _commission;
     private final float _doubtSum;
-    private final float _creditLimit;
-    private final float _interestOnBalanceDebit;
-    private final float _interestOnBalanceLowDeposit;
-    private final float _interestOnBalanceHighDeposit;
+    private float _creditLimit;
+    private float _interestOnBalanceDebit;
+    private float _interestOnBalanceLowDeposit;
+    private float _interestOnBalanceHighDeposit;
     private final float _depositBorder;
     private final int _depositPeriod;
     private List<IClient> _clients = new Vector<>();
+    private List<IClient> _subscribers = new Vector<>();
     private List<IAccount> _accounts = new Vector<>();
 
     public Bank(
@@ -48,6 +49,62 @@ public class Bank implements IBank
     }
 
     @Override
+    public void ChangeCreditLimit(float creditLimit)
+    {
+        _creditLimit = creditLimit;
+        for (IAccount account : _accounts)
+        {
+            if (account instanceof CreditAccount)
+            {
+                account.SetCreditLimit(creditLimit);
+            }
+        }
+        NotifySubscribers("Credit limit changed to " + creditLimit + ".\n");
+    }
+
+    @Override
+    public void ChangeInterestOnBalanceDebit(float iobDebit)
+    {
+        _interestOnBalanceDebit = iobDebit;
+        for (IAccount account : _accounts)
+        {
+            if (account instanceof DebitAccount)
+            {
+                account.SetIOB(iobDebit);
+            }
+        }
+        NotifySubscribers("Interest in balance for debit accounts changed to " + iobDebit + ".\n");
+    }
+
+    @Override
+    public void ChangeInterestOnBalanceLowDeposit(float iobLowDeposit)
+    {
+        _interestOnBalanceLowDeposit = iobLowDeposit;
+        for (IAccount account : _accounts)
+        {
+            if (account instanceof DepositAccount && account.GetBalance() < _depositBorder)
+            {
+                account.SetIOB(iobLowDeposit);
+            }
+        }
+        NotifySubscribers("Low interest in balance for deposit accounts changed to " + iobLowDeposit + ".\n");
+    }
+
+    @Override
+    public void ChangeInterestOnBalanceHighDeposit(float iobHighDeposit)
+    {
+        _interestOnBalanceLowDeposit = iobHighDeposit;
+        for (IAccount account : _accounts)
+        {
+            if (account instanceof DepositAccount && account.GetBalance() >= _depositBorder)
+            {
+                account.SetIOB(iobHighDeposit);
+            }
+        }
+        NotifySubscribers("High interest in balance for deposit accounts changed to " + iobHighDeposit + ".\n");
+    }
+
+    @Override
     public void CreateClient(@NonNull String name, String address, String passport)
     {
         _clients.add(new Client(name, address, passport));
@@ -56,25 +113,52 @@ public class Bank implements IBank
     @Override
     public void CreateCreditAccount(@NonNull String id, @NonNull IClient client)
     {
-        _accounts.add(new CreditAccount(id, client, _creditLimit));
+        _accounts.add(new CreditAccount(id, client, _creditLimit, _commission));
     }
 
     @Override
     public void CreateDebitAccount(@NonNull String id, @NonNull IClient client)
     {
-        _accounts.add(new DebitAccount(id, client));
+        _accounts.add(new DebitAccount(id, client, _interestOnBalanceDebit));
     }
 
     @Override
     public void CreateDepositAccount(@NonNull String id, @NonNull IClient client, float startAmount)
     {
-        _accounts.add(new DepositAccount(id, client, _depositPeriod));
+        if (startAmount < _depositBorder)
+            _accounts.add(new DepositAccount(id, client, _depositPeriod, _interestOnBalanceLowDeposit));
+        else
+            _accounts.add(new DepositAccount(id, client, _depositPeriod, _interestOnBalanceHighDeposit));
     }
 
     @Override
     public String Deposit(@NonNull String id, float amount)
     {
         return GetAccountById(id).Deposit(amount);
+    }
+
+    @Override
+    public void DepositDailyIOB()
+    {
+        for (IAccount account : _accounts)
+        {
+            if (account instanceof DebitAccount || account instanceof DepositAccount)
+            {
+                account.DepositDailyIOB();
+            }
+        }
+    }
+
+    @Override
+    public void DepositMonthlyIOB()
+    {
+        for (IAccount account : _accounts)
+        {
+            if (account instanceof DebitAccount || account instanceof DepositAccount)
+            {
+                account.DepositMonthlyIOB();
+            }
+        }
     }
 
     @Override
@@ -106,6 +190,15 @@ public class Bank implements IBank
     }
 
     @Override
+    public void NotifySubscribers(@NonNull String message)
+    {
+        for (IClient client : _subscribers)
+        {
+            client.ReceiveMessage(message);
+        }
+    }
+
+    @Override
     public String Transfer(@NonNull String source, @NonNull String target, float amount)
     {
         String first = GetAccountById(source).Withdraw(amount);
@@ -117,6 +210,22 @@ public class Bank implements IBank
     @Override
     public String Withdraw(@NonNull String id, float amount)
     {
+        IAccount account = GetAccountById(id);
+        if ((account.GetOwner().GetAddress().isEmpty() || account.GetOwner().GetPassport().isEmpty())
+                && amount > _doubtSum)
+            return "Failed. Confirm address and passport first.\n";
         return GetAccountById(id).Withdraw(amount);
+    }
+
+    @Override
+    public void WithdrawCommission()
+    {
+        for (IAccount account : _accounts)
+        {
+            if (account instanceof CreditAccount)
+            {
+                account.WithdrawCommission();
+            }
+        }
     }
 }

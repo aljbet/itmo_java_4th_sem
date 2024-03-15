@@ -28,6 +28,18 @@ public class CentralBank implements ICentralBank
     }
 
     @Override
+    public void DepositDailyIOB()
+    {
+        for (IBank bank : _bankFactory.GetAllBanks()) bank.DepositDailyIOB();
+    }
+
+    @Override
+    public void DepositMonthlyIOB()
+    {
+        for (IBank bank : _bankFactory.GetAllBanks()) bank.DepositMonthlyIOB();
+    }
+
+    @Override
     public List<String> GetAllBankNames()
     {
         Vector<String> res = new Vector<>();
@@ -69,5 +81,11 @@ public class CentralBank implements ICentralBank
         if (first.charAt(0) == 'F') return first;
         targetAccount.Deposit(amount);
         return "Success.\n";
+    }
+
+    @Override
+    public void WithdrawCommission()
+    {
+        for (IBank bank : _bankFactory.GetAllBanks()) bank.WithdrawCommission();
     }
 }

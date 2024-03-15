@@ -16,6 +16,9 @@ public interface ICentralBank
                     float iobHighDeposit,
                     float depositBorder,
                     int depositPeriod);
+
+    void DepositDailyIOB();
+    void DepositMonthlyIOB();
     List<String> GetAllBankNames();
     IBank GetBankByName(@NonNull String name);
     String InterbankTransfer(@NonNull String sourceBankName,
@@ -23,4 +26,6 @@ public interface ICentralBank
                              @NonNull String targetBankName,
                              @NonNull String targetId,
                              float amount);
+
+    void WithdrawCommission();
 }

@@ -17,6 +17,18 @@ public class Client implements IClient
     }
 
     @Override
+    public String GetAddress()
+    {
+        return _address;
+    }
+
+    @Override
+    public String GetPassport()
+    {
+        return _passport;
+    }
+
+    @Override
     public void SetAddress(@NonNull String address)
     {
         _address = address;
@@ -26,5 +38,10 @@ public class Client implements IClient
     public void SetPassport(@NonNull String passport)
     {
         _passport = passport;
+    }
+
+    @Override
+    public void ReceiveMessage(@NonNull String message)
+    {
     }
 }
