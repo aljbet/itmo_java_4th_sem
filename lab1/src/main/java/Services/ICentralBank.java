@@ -10,5 +10,12 @@ public interface ICentralBank
 
     List<String> GetAllBankNames();
 
-    void CreateBank(String Name, float commission, float iobDebit, float iobLowDeposit, float iobHighDeposit, float doubtSum);
+    void CreateBank(String name,
+                    float commission,
+                    float iobDebit,
+                    float iobLowDeposit,
+                    float iobHighDeposit,
+                    float doubtSum,
+                    float creditLimit,
+                    int depositPeriod);
 }

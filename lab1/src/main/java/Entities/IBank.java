@@ -15,4 +15,7 @@ public interface IBank
     void CreateCreditAccount(@NonNull String id, @NonNull IClient client);
     void CreateDebitAccount(@NonNull String id, @NonNull IClient client);
     void CreateDepositAccount(@NonNull String id, @NonNull IClient client);
+    String Withdraw(@NonNull String id, float amount);
+    String Deposit(@NonNull String id, float amount);
+    String Transfer(@NonNull String source, @NonNull String target, float amount);
 }

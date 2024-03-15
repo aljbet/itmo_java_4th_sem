@@ -12,39 +12,26 @@ public class MainActionChoiceScenario implements IScenario
                         "interbank transfer", "set address", "set passport", "choose another bank", "exit")
                 .read("Choose action: ");
 
-        if (action.equals("create new account"))
+        switch (action)
         {
-            CreateNewAccountScenario.Execute(context);
-        }
-        else if (action.equals("withdraw"))
-        {
-//            WithdrawScenario.Execute(context);
-        }
-        else if (action.equals("deposit"))
-        {
-//            DepositScenario.Execute(context);
-        }
-        else if (action.equals("in-bank transfer"))
-        {
-//            InBankTransferScenario.Execute(context);
-        }
-        else if (action.equals("interbank transfer"))
-        {
+            case "create new account" -> CreateNewAccountScenario.Execute(context);
+            case "withdraw" -> WithdrawScenario.Execute(context);
+            case "deposit" -> DepositScenario.Execute(context);
+            case "in-bank transfer" -> InBankTransferScenario.Execute(context);
+            case "interbank transfer" ->
+            {
 //            InterbankTransferScenario.Execute(context);
+            }
+            case "set address" ->
+                    context.get_currentClient().SetAddress(context.get_textIO().newStringInputReader().read("Enter address: "));
+            case "set passport" ->
+                    context.get_currentClient().SetPassport(context.get_textIO().newStringInputReader().read("Enter passport: "));
+            case "choose another bank" -> ChooseBankScenario.Execute(context);
+            default ->
+            {
+                if (context.get_textIO().newBooleanInputReader().read("Exit?"))
+                    System.exit(0);
+            }
         }
-        else if (action.equals("set address"))
-        {
-            context.get_currentClient().SetAddress(context.get_textIO().newStringInputReader().read("Enter address: "));
-        }
-        else if (action.equals("set passport"))
-        {
-            context.get_currentClient().SetPassport(context.get_textIO().newStringInputReader().read("Enter passport: "));
-        }
-        else if (action.equals("choose another bank"))
-        {
-            ChooseBankScenario.Execute(context);
-        }
-        else if (context.get_textIO().newBooleanInputReader().read("Exit?"))
-            System.exit(0);
     }
 }

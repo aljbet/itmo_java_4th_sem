@@ -14,7 +14,8 @@ public class CentralBank implements ICentralBank
     public List<String> GetAllBankNames()
     {
         Vector<String> res = new Vector<>();
-        for (IBank bank : _bankFactory.GetAllBanks()) {
+        for (IBank bank : _bankFactory.GetAllBanks())
+        {
             res.add(bank.GetName());
         }
 
@@ -24,7 +25,8 @@ public class CentralBank implements ICentralBank
     @Override
     public IBank GetBankByName(String name)
     {
-        for (IBank bank : _bankFactory.GetAllBanks()) {
+        for (IBank bank : _bankFactory.GetAllBanks())
+        {
             if (bank.GetName().equals(name)) return bank;
         }
 
@@ -32,8 +34,16 @@ public class CentralBank implements ICentralBank
     }
 
     @Override
-    public void CreateBank(String name, float commission, float iobDebit, float iobLowDeposit, float iobHighDeposit, float doubtSum)
+    public void CreateBank(String name,
+                           float commission,
+                           float iobDebit,
+                           float iobLowDeposit,
+                           float iobHighDeposit,
+                           float doubtSum,
+                           float creditLimit,
+                           int depositPeriod)
     {
-        _bankFactory.AddBank(new Bank(name, commission, iobDebit, iobLowDeposit, iobHighDeposit, doubtSum));
+        _bankFactory.AddBank(new Bank(name, commission, iobDebit, iobLowDeposit,
+                iobHighDeposit, doubtSum, creditLimit, depositPeriod));
     }
 }

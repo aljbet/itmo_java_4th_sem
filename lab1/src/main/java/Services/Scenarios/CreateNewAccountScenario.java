@@ -17,7 +17,6 @@ public class CreateNewAccountScenario implements IScenario
         if (context.get_currentBank().GetAccountById(id) != null)
         {
             context.get_textIO().getTextTerminal().printf("Account already exists. Please try again.\n");
-            CreateNewAccountScenario.Execute(context);
         }
         else
         {
@@ -30,5 +29,6 @@ public class CreateNewAccountScenario implements IScenario
 
             context.get_textIO().getTextTerminal().printf("Account created successfully.\n");
         }
+        MainActionChoiceScenario.Execute(context);
     }
 }

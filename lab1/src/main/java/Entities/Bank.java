@@ -19,6 +19,8 @@ public class Bank implements IBank
     private final float _interestOnBalanceLowDeposit;
     private final float _interestOnBalanceHighDeposit;
     private final float _doubtSum;
+    private final float _creditLimit;
+    private final int _depositPeriod;
     private List<IClient> _clients = new Vector<>();
     private List<IAccount> _accounts = new Vector<>();
 
@@ -28,7 +30,9 @@ public class Bank implements IBank
             float iobDebit,
             float iobLowDeposit,
             float iobHighDeposit,
-            float doubtSum)
+            float doubtSum,
+            float creditLimit,
+            int depositPeriod)
     {
         _name = name;
         _commission = commission;
@@ -36,6 +40,8 @@ public class Bank implements IBank
         _interestOnBalanceLowDeposit = iobLowDeposit;
         _interestOnBalanceHighDeposit = iobHighDeposit;
         _doubtSum = doubtSum;
+        _creditLimit = creditLimit;
+        _depositPeriod = depositPeriod;
     }
 
     @Override
@@ -73,7 +79,7 @@ public class Bank implements IBank
     @Override
     public void CreateCreditAccount(@NonNull String id, @NonNull IClient client)
     {
-        _accounts.add(new CreditAccount(id, client));
+        _accounts.add(new CreditAccount(id, client, _creditLimit));
     }
 
     @Override
@@ -85,6 +91,27 @@ public class Bank implements IBank
     @Override
     public void CreateDepositAccount(@NonNull String id, @NonNull IClient client)
     {
-        _accounts.add(new DepositAccount(id, client));
+        _accounts.add(new DepositAccount(id, client, _depositPeriod));
+    }
+
+    @Override
+    public String Withdraw(@NonNull String id, float amount)
+    {
+        return GetAccountById(id).Withdraw(amount);
+    }
+
+    @Override
+    public String Deposit(@NonNull String id, float amount)
+    {
+        return GetAccountById(id).Deposit(amount);
+    }
+
+    @Override
+    public String Transfer(@NonNull String source, @NonNull String target, float amount)
+    {
+        String first = GetAccountById(source).Withdraw(amount);
+        if (first.charAt(0) == 'F') return first;
+        GetAccountById(target).Deposit(amount);
+        return "Success.\n";
     }
 }

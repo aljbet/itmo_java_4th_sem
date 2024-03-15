@@ -9,5 +9,6 @@ public class Program
     public static void main(String[] args)
     {
         BeginScenario.Execute(_context);
+        System.exit(0);
     }
 }

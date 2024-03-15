@@ -9,7 +9,7 @@ public class ClientEnterScenario implements IScenario
     public static void Execute(@NonNull Context context)
     {
         String action = context.get_textIO().newStringInputReader()
-                .withPossibleValues("log in", "sign up")
+                .withPossibleValues("log in", "sign up", "exit")
                 .read("Choose action: ");
 
         String name = context.get_textIO().newStringInputReader()
@@ -32,7 +32,7 @@ public class ClientEnterScenario implements IScenario
                 ClientEnterScenario.Execute(context);
             }
         }
-        else
+        else if (action.equals("sign up"))
         {
             if (client == null)
             {
@@ -54,5 +54,7 @@ public class ClientEnterScenario implements IScenario
                 ClientEnterScenario.Execute(context);
             }
         }
+        else if (context.get_textIO().newBooleanInputReader().read("Exit?"))
+            System.exit(0);
     }
 }
