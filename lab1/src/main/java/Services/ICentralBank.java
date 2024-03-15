@@ -1,21 +1,26 @@
 package Services;
 
 import Entities.IBank;
+import lombok.NonNull;
 
 import java.util.List;
 
 public interface ICentralBank
 {
-    IBank GetBankByName(String name);
-
-    List<String> GetAllBankNames();
-
-    void CreateBank(String name,
+    void CreateBank(@NonNull String name,
                     float commission,
+                    float doubtSum,
+                    float creditLimit,
                     float iobDebit,
                     float iobLowDeposit,
                     float iobHighDeposit,
-                    float doubtSum,
-                    float creditLimit,
+                    float depositBorder,
                     int depositPeriod);
+    List<String> GetAllBankNames();
+    IBank GetBankByName(@NonNull String name);
+    String InterbankTransfer(@NonNull String sourceBankName,
+                             @NonNull String sourceId,
+                             @NonNull String targetBankName,
+                             @NonNull String targetId,
+                             float amount);
 }

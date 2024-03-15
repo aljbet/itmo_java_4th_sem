@@ -6,9 +6,8 @@ public interface IAccount
 {
     void CancelTransaction();
     IAccount Clone();
+    String Deposit(float amount);
     String GetId();
     IClient GetOwner();
-
     String Withdraw(float amount);
-    String Deposit(float amount);
 }

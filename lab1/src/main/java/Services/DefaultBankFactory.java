@@ -13,8 +13,8 @@ public class DefaultBankFactory implements IBankFactory
     public DefaultBankFactory()
     {
         _banks = new Vector<>();
-        _banks.add(new Bank("open", 0f, 0f, 0f, 0f, 100, 50, 10));
-        _banks.add(new Bank("sber", 0f, 0f, 0f, 0f, 100, 50, 10));
+        _banks.add(new Bank("open", 0f, 0f, 0f, 0f, 100, 50, 10, 10));
+        _banks.add(new Bank("sber", 0f, 0f, 0f, 0f, 100, 50, 10, 10));
     }
 
     @Override

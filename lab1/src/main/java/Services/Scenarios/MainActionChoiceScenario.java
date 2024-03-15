@@ -18,14 +18,15 @@ public class MainActionChoiceScenario implements IScenario
             case "withdraw" -> WithdrawScenario.Execute(context);
             case "deposit" -> DepositScenario.Execute(context);
             case "in-bank transfer" -> InBankTransferScenario.Execute(context);
-            case "interbank transfer" ->
-            {
-//            InterbankTransferScenario.Execute(context);
-            }
+            case "interbank transfer" -> InterbankTransferScenario.Execute(context);
             case "set address" ->
-                    context.get_currentClient().SetAddress(context.get_textIO().newStringInputReader().read("Enter address: "));
+                    context.get_currentClient().SetAddress(
+                            context.get_textIO().newStringInputReader()
+                                    .read("Enter address: "));
             case "set passport" ->
-                    context.get_currentClient().SetPassport(context.get_textIO().newStringInputReader().read("Enter passport: "));
+                    context.get_currentClient().SetPassport(
+                            context.get_textIO().newStringInputReader()
+                                    .read("Enter passport: "));
             case "choose another bank" -> ChooseBankScenario.Execute(context);
             default ->
             {

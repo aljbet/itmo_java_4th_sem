@@ -37,6 +37,14 @@ public class DebitAccount implements IAccount
     }
 
     @Override
+    public String Deposit(float amount)
+    {
+        _previousState = Clone();
+        _balance += amount;
+        return "Success. Current balance: " + _balance + ".\n";
+    }
+
+    @Override
     public String GetId()
     {
         return _id;
@@ -56,14 +64,6 @@ public class DebitAccount implements IAccount
 
         _previousState = Clone();
         _balance -= amount;
-        return "Success. Current balance: " + _balance + ".\n";
-    }
-
-    @Override
-    public String Deposit(float amount)
-    {
-        _previousState = Clone();
-        _balance += amount;
         return "Success. Current balance: " + _balance + ".\n";
     }
 }

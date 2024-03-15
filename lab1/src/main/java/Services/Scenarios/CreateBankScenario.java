@@ -42,13 +42,18 @@ public class CreateBankScenario implements IScenario
                 .withMinVal(0f)
                 .read("Enter credit limit: ");
 
+        float depositBorder = context.get_textIO().newFloatInputReader()
+                .withMinVal(0f)
+                .read("Enter deposit border: ");
+
         int depositPeriod = context.get_textIO().newIntInputReader()
                 .withMinVal(1)
                 .read("Enter deposit period ");
 
-        context.get_centralBank().CreateBank(name, commission, interestOnBalanceDebit,
-                interestOnBalanceLowDeposit, interestOnBalanceHighDeposit, doubtSum, creditLimit,
-                depositPeriod);
+
+        context.get_centralBank().CreateBank(name, commission, doubtSum, creditLimit,
+                interestOnBalanceDebit, interestOnBalanceLowDeposit, interestOnBalanceHighDeposit,
+                depositBorder, depositPeriod);
 
         context.get_textIO().getTextTerminal().printf("Bank %s successfully created.\n", name);
 

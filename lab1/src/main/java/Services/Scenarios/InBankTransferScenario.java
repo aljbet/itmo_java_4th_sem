@@ -16,12 +16,12 @@ public class InBankTransferScenario implements IScenario
         if (context.get_currentBank().GetAccountById(sourceId) == null)
         {
             context.get_textIO().getTextTerminal()
-                    .printf("We couldn't find source account. Please try again.\n");
+                    .printf("Failed. We couldn't find source account. Please try again.\n");
         }
         else if (context.get_currentBank().GetAccountById(targetId) == null)
         {
             context.get_textIO().getTextTerminal()
-                    .printf("We couldn't find target account. Please try again.\n");
+                    .printf("Failed. We couldn't find target account. Please try again.\n");
         }
         else
         {

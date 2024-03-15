@@ -15,11 +15,12 @@ public class Bank implements IBank
 {
     private final String _name;
     private final float _commission;
+    private final float _doubtSum;
+    private final float _creditLimit;
     private final float _interestOnBalanceDebit;
     private final float _interestOnBalanceLowDeposit;
     private final float _interestOnBalanceHighDeposit;
-    private final float _doubtSum;
-    private final float _creditLimit;
+    private final float _depositBorder;
     private final int _depositPeriod;
     private List<IClient> _clients = new Vector<>();
     private List<IAccount> _accounts = new Vector<>();
@@ -27,47 +28,23 @@ public class Bank implements IBank
     public Bank(
             @NonNull String name,
             float commission,
+            float doubtSum,
+            float creditLimit,
             float iobDebit,
             float iobLowDeposit,
             float iobHighDeposit,
-            float doubtSum,
-            float creditLimit,
+            float depositBorder,
             int depositPeriod)
     {
         _name = name;
         _commission = commission;
+        _doubtSum = doubtSum;
+        _creditLimit = creditLimit;
         _interestOnBalanceDebit = iobDebit;
         _interestOnBalanceLowDeposit = iobLowDeposit;
         _interestOnBalanceHighDeposit = iobHighDeposit;
-        _doubtSum = doubtSum;
-        _creditLimit = creditLimit;
+        _depositBorder = depositBorder;
         _depositPeriod = depositPeriod;
-    }
-
-    @Override
-    public String GetName()
-    {
-        return _name;
-    }
-
-    @Override
-    public IClient GetClientByName(@NonNull String name)
-    {
-        for (IClient client : _clients) {
-            if (client.GetFullName().equals(name)) return client;
-        }
-
-        return null;
-    }
-
-    @Override
-    public IAccount GetAccountById(@NonNull String id)
-    {
-        for (IAccount account : _accounts) {
-            if (account.GetId().equals(id)) return account;
-        }
-
-        return null;
     }
 
     @Override
@@ -89,15 +66,9 @@ public class Bank implements IBank
     }
 
     @Override
-    public void CreateDepositAccount(@NonNull String id, @NonNull IClient client)
+    public void CreateDepositAccount(@NonNull String id, @NonNull IClient client, float startAmount)
     {
         _accounts.add(new DepositAccount(id, client, _depositPeriod));
-    }
-
-    @Override
-    public String Withdraw(@NonNull String id, float amount)
-    {
-        return GetAccountById(id).Withdraw(amount);
     }
 
     @Override
@@ -107,11 +78,45 @@ public class Bank implements IBank
     }
 
     @Override
+    public IAccount GetAccountById(@NonNull String id)
+    {
+        for (IAccount account : _accounts)
+        {
+            if (account.GetId().equals(id)) return account;
+        }
+
+        return null;
+    }
+
+    @Override
+    public IClient GetClientByName(@NonNull String name)
+    {
+        for (IClient client : _clients)
+        {
+            if (client.GetFullName().equals(name)) return client;
+        }
+
+        return null;
+    }
+
+    @Override
+    public String GetName()
+    {
+        return _name;
+    }
+
+    @Override
     public String Transfer(@NonNull String source, @NonNull String target, float amount)
     {
         String first = GetAccountById(source).Withdraw(amount);
         if (first.charAt(0) == 'F') return first;
         GetAccountById(target).Deposit(amount);
         return "Success.\n";
+    }
+
+    @Override
+    public String Withdraw(@NonNull String id, float amount)
+    {
+        return GetAccountById(id).Withdraw(amount);
     }
 }

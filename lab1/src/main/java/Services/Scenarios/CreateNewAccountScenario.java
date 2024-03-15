@@ -23,8 +23,15 @@ public class CreateNewAccountScenario implements IScenario
             switch (type)
             {
                 case "credit" -> context.get_currentBank().CreateCreditAccount(id, context.get_currentClient());
-                case "debit" -> context.get_currentBank().CreateDebitAccount(id, context.get_currentClient());
-                case "deposit" -> context.get_currentBank().CreateDepositAccount(id, context.get_currentClient());
+                case "debit" ->
+                        context.get_currentBank().CreateDebitAccount(id, context.get_currentClient());
+                case "deposit" ->
+                {
+                    float startAmount = context.get_textIO().newFloatInputReader()
+                            .withMinVal(0f)
+                            .read("Enter start amount: ");
+                    context.get_currentBank().CreateDepositAccount(id, context.get_currentClient(), startAmount);
+                }
             }
 
             context.get_textIO().getTextTerminal().printf("Account created successfully.\n");

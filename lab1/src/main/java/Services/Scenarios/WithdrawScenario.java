@@ -12,7 +12,7 @@ public class WithdrawScenario implements IScenario
 
         if (context.get_currentBank().GetAccountById(id) == null)
         {
-            context.get_textIO().getTextTerminal().printf("We couldn't find your account. Please try again.\n");
+            context.get_textIO().getTextTerminal().printf("Failed. We couldn't find your account. Please try again.\n");
         }
         else
         {
