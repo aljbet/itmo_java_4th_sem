@@ -1,0 +1,5 @@
+rootProject.name = 'cat_service'
+include 'controller'
+include 'service'
+include 'dao'
+
