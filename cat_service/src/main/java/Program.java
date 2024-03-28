@@ -2,7 +2,8 @@ public class Program
 {
     public static void main(String[] args)
     {
-        Presentation.start();
+        Init.init();
+        Presentation.chooseAction();
         System.exit(0);
     }
 }

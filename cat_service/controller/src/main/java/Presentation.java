@@ -7,15 +7,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Presentation {
-    private static final TextIO _textIO = TextIoFactory.getTextIO();
+    public static final TextIO _textIO = TextIoFactory.getTextIO();
     private static final ICatService catService = new CatService();
 
-    public static void start() {
-        _textIO.getTextTerminal().println("Welcome to the Cat Service!");
+    public static void chooseAction() {
         String action = _textIO.newStringInputReader()
                 .withPossibleValues("add new cat", "add new owner",
                         "get all cats", "get all owners",
-                        "get cat by name", "get cats by owner",
+                        "get cat by name", "get cats by owner", "get cat's friends",
                         "set friendship", "exit")
                 .read("Choose action:");
 
@@ -45,13 +44,15 @@ public class Presentation {
             case "get cats by owner":
                 getCatsByOwner();
                 break;
+            case "get cat's friends":
+                getCatsFriends();
             case "set friendship":
                 setFriendship();
                 break;
             case "exit":
                 System.exit(0);
         }
-        start();
+        chooseAction();
     }
 
     private static void addNewCat() {
@@ -110,9 +111,19 @@ public class Presentation {
             return;
         }
         List<String> cats = catService.getCatsByOwner(ownerName);
-        for (String cat : cats) {
+        for (String cat : cats)
+        {
             _textIO.getTextTerminal().println(cat);
         }
+    }
+
+    private static void getCatsFriends() {
+        String name = _textIO.newStringInputReader().read("Enter cat's name: ");
+        if (catService.getCatByName(name) == null) {
+            _textIO.getTextTerminal().println("That cat is not in database.");
+            return;
+        }
+        for (String cat : catService.getCatsFriends(name)) _textIO.getTextTerminal().println(cat);
     }
 
 

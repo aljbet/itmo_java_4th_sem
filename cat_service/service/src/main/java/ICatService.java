@@ -5,8 +5,9 @@ public interface ICatService {
     void addNewOwner(String name, String dateOfBirth);
     List<String> getAllCats();
     List<String> getAllOwners();
-    List<String> getCatsByOwner(String owner);
     String getCatByName(String name);
+    List<String> getCatsByOwner(String owner);
+    List<String> getCatsFriends(String name);
     String getOwnerByName(String name);
     List<String> getPossibleColors();
     void setFriendship(String firstCatName, String secondCatName);
