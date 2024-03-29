@@ -1,14 +1,15 @@
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public class Init {
-    private static EntityManager entityManager;
+    private static EntityManagerFactory entityManagerFactory;
 
-    public static EntityManager get_em() {
-        return entityManager;
+    public static EntityManagerFactory get_emf() {
+        return entityManagerFactory;
     }
 
     public static void init() {
-        entityManager = Persistence.createEntityManagerFactory("catservice").createEntityManager();
+        entityManagerFactory = Persistence.createEntityManagerFactory("catservice");
     }
 }

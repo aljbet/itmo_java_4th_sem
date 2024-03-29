@@ -1,20 +1,19 @@
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Presentation {
     public static final TextIO _textIO = TextIoFactory.getTextIO();
-    private static final ICatService catService = new CatService();
+    private static ICatService catService = new CatService();
 
     public static void chooseAction() {
         String action = _textIO.newStringInputReader()
                 .withPossibleValues("add new cat", "add new owner",
                         "get all cats", "get all owners",
-                        "get cat by name", "get cats by owner", "get cat's friends",
+                        "get cat by name", "get owner by name",
                         "set friendship", "exit")
                 .read("Choose action:");
 
@@ -41,11 +40,9 @@ public class Presentation {
             case "get cat by name":
                 getCatByName();
                 break;
-            case "get cats by owner":
-                getCatsByOwner();
+            case "get owner by name":
+                getOwnerByName();
                 break;
-            case "get cat's friends":
-                getCatsFriends();
             case "set friendship":
                 setFriendship();
                 break;
@@ -57,7 +54,7 @@ public class Presentation {
 
     private static void addNewCat() {
         String name = _textIO.newStringInputReader().read("Enter cat's name: ");
-        if (catService.getCatByName(name) != null)
+        if (catService.catExists(name))
         {
             _textIO.getTextTerminal().println("That cat is already in database. Try again.");
             return;
@@ -73,9 +70,9 @@ public class Presentation {
                 .withPossibleValues(catService.getPossibleColors())
                 .read("Enter cat's color: ");
         String ownerName = _textIO.newStringInputReader().read("Enter cat's owner's name: ");
-        if (catService.getOwnerByName(name) == null)
+        if (!catService.ownerExists(ownerName))
         {
-            _textIO.getTextTerminal().println("That cat is already in database. Try again.");
+            _textIO.getTextTerminal().println("That owner is not in database. Try again.");
             return;
         }
         catService.addNewCat(name, dateOfBirth, breed, color, ownerName);
@@ -83,7 +80,7 @@ public class Presentation {
 
     private static void addNewOwner() {
         String name = _textIO.newStringInputReader().read("Enter owner's name: ");
-        if (catService.getOwnerByName(name) != null)
+        if (catService.ownerExists(name))
         {
             _textIO.getTextTerminal().println("That owner is already in database. Try again.");
             return;
@@ -103,39 +100,21 @@ public class Presentation {
         _textIO.getTextTerminal().println(Objects.requireNonNullElse(res, "That cat is not in database."));
     }
 
-    private static void getCatsByOwner() {
-        String ownerName = _textIO.newStringInputReader().read("Enter owner's name: ");
-        if (catService.getOwnerByName(ownerName) == null)
-        {
-            _textIO.getTextTerminal().println("That owner is not in database.");
-            return;
-        }
-        List<String> cats = catService.getCatsByOwner(ownerName);
-        for (String cat : cats)
-        {
-            _textIO.getTextTerminal().println(cat);
-        }
+    private static void getOwnerByName() {
+        String name = _textIO.newStringInputReader().read("Enter owner's name: ");
+        String res = catService.getOwnerByName(name);
+        _textIO.getTextTerminal().println(Objects.requireNonNullElse(res, "That owner is not in database."));
     }
-
-    private static void getCatsFriends() {
-        String name = _textIO.newStringInputReader().read("Enter cat's name: ");
-        if (catService.getCatByName(name) == null) {
-            _textIO.getTextTerminal().println("That cat is not in database.");
-            return;
-        }
-        for (String cat : catService.getCatsFriends(name)) _textIO.getTextTerminal().println(cat);
-    }
-
 
     private static void setFriendship() {
         String firstCatName = _textIO.newStringInputReader().read("Enter first cat's name: ");
-        if (catService.getCatByName(firstCatName) == null)
+        if (!catService.catExists(firstCatName))
         {
             _textIO.getTextTerminal().println("First cat is not in database.");
             return;
         }
         String secondCatName = _textIO.newStringInputReader().read("Enter second cat's name: ");
-        if (catService.getCatByName(secondCatName) == null)
+        if (!catService.catExists(secondCatName))
         {
             _textIO.getTextTerminal().println("Second cat is not in database.");
             return;

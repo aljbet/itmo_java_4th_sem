@@ -6,9 +6,9 @@ public interface ICatService {
     List<String> getAllCats();
     List<String> getAllOwners();
     String getCatByName(String name);
-    List<String> getCatsByOwner(String owner);
-    List<String> getCatsFriends(String name);
     String getOwnerByName(String name);
+    boolean catExists(String name);
+    boolean ownerExists(String name);
     List<String> getPossibleColors();
     void setFriendship(String firstCatName, String secondCatName);
 }
