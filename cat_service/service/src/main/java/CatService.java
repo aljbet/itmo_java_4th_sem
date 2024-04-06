@@ -29,51 +29,41 @@ public class CatService implements ICatService {
     }
 
     @Override
-    public void addNewCat(String catName, String dateOfBirth, String breed, String color, String ownerName) {
-        Cat cat = new Cat();
-        cat.setName(catName);
-        cat.setDateOfBirth(dateOfBirth);
-        cat.setBreed(breed);
-        cat.setColor(color);
-        Owner owner = ownerDao.getByName(ownerName);
-        cat.setOwner(owner);
-        catDao.create(cat);
+    public void addNewCat(CatDto cat) {
+        catDao.create(cat.getCat(ownerDao));
     }
 
     @Override
-    public void addNewOwner(String name, String dateOfBirth) {
-        Owner owner = new Owner();
-        owner.setName(name);
-        owner.setDateOfBirth(dateOfBirth);
-        ownerDao.create(owner);
+    public void addNewOwner(OwnerDto owner) {
+        ownerDao.create(owner.getOwner());
     }
 
     @Override
-    public List<String> getAllCats() {
-        Vector<String> res = new Vector<>();
-        for (Cat cat : catDao.getAll()) res.add(cat.toString());
+    public List<CatDto> getAllCats() {
+        Vector<CatDto> res = new Vector<>();
+        for (Cat cat : catDao.getAll()) res.add(new CatDto(cat));
         return res;
     }
 
     @Override
-    public List<String> getAllOwners() {
-        Vector<String> res = new Vector<>();
-        for (Owner owner : ownerDao.getAll()) res.add(owner.toString());
+    public List<OwnerDto> getAllOwners() {
+        Vector<OwnerDto> res = new Vector<>();
+        for (Owner owner : ownerDao.getAll()) res.add(new OwnerDto(owner));
         return res;
     }
 
     @Override
-    public String getCatByName(String name) {
+    public CatDto getCatByName(String name) {
         Cat cat = catDao.getByName(name);
         if (cat == null) return null;
-        return cat.toString();
+        return new CatDto(cat);
     }
 
     @Override
-    public String getOwnerByName(String name) {
+    public OwnerDto getOwnerByName(String name) {
         Owner owner = ownerDao.getByName(name);
         if (owner == null) return null;
-        return owner.toString();
+        return new OwnerDto(owner);
     }
 
     @Override

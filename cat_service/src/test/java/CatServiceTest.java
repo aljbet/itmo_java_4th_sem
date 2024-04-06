@@ -13,14 +13,9 @@ public class CatServiceTest {
     public void addNewCatTest(String catName, String dateOfBirth, String breed, String color, String ownerName) {
         CatService catService = new CatService(catDao, ownerDao);
         Owner owner = new Owner();
-        Cat cat = new Cat();
-        cat.setName(catName);
-        cat.setDateOfBirth(dateOfBirth);
-        cat.setBreed(breed);
-        cat.setColor(color);
-        cat.setOwner(owner);
+        CatDto cat = new CatDto(catName, dateOfBirth, breed, color, ownerName);
 
-        catService.addNewCat(catName, dateOfBirth, breed, color, ownerName);
+        catService.addNewCat(cat);
         Mockito.when(ownerDao.getByName(ownerName)).thenReturn(owner);
 
         Mockito.verify(ownerDao).getByName(ownerName);
@@ -30,13 +25,11 @@ public class CatServiceTest {
     @CsvSource({"a,b"})
     public void addNewOwnerTest(String ownerName, String dateOfBirth) {
         CatService catService = new CatService(catDao, ownerDao);
-        Owner owner = new Owner();
-        owner.setName(ownerName);
-        owner.setDateOfBirth(dateOfBirth);
+        OwnerDto owner = new OwnerDto(ownerName, dateOfBirth);
 
-        catService.addNewOwner(ownerName, dateOfBirth);
+        catService.addNewOwner(owner);
 
-        Mockito.verify(ownerDao).create(owner);
+        Mockito.verify(ownerDao).create(owner.getOwner());
     }
 
     @Test

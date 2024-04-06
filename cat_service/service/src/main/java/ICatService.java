@@ -1,12 +1,12 @@
 import java.util.List;
 
 public interface ICatService {
-    void addNewCat(String catName, String dateOfBirth, String breed, String color, String ownerName);
-    void addNewOwner(String name, String dateOfBirth);
-    List<String> getAllCats();
-    List<String> getAllOwners();
-    String getCatByName(String name);
-    String getOwnerByName(String name);
+    void addNewCat(CatDto cat);
+    void addNewOwner(OwnerDto owner);
+    List<CatDto> getAllCats();
+    List<OwnerDto> getAllOwners();
+    CatDto getCatByName(String name);
+    OwnerDto getOwnerByName(String name);
     boolean catExists(String name);
     boolean ownerExists(String name);
     List<String> getPossibleColors();

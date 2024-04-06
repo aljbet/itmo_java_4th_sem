@@ -1,33 +1,30 @@
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name="owners")
+@NoArgsConstructor
+@Table(name = "owners")
 public class Owner {
-    @Id
+    public Owner(String name, String dateOfBirth) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+   @Id
     @GeneratedValue
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="date_of_birth")
+    @Column(name = "date_of_birth")
     private String dateOfBirth;
 
-    @OneToMany(mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<Cat> cats;
-
-    public String toString() {
-        String catsStr = "";
-        for (Cat cat : cats) {
-            catsStr += cat.getName() + ", ";
-        }
-        if (!catsStr.isEmpty()) catsStr = catsStr.substring(0, catsStr.length()-2);
-        return "Owner: name=" + name + ", dateOfBirth=" + dateOfBirth +
-                ", cats=" + catsStr;
-    }
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    private List<Cat> cats;
 }

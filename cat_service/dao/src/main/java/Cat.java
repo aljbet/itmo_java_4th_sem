@@ -1,12 +1,21 @@
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "cats")
 public class Cat {
+    public Cat(String name, String dateOfBirth, String color, String breed, Owner owner) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.color = color;
+        this.breed = breed;
+        this.owner = owner;
+    }
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -29,16 +38,5 @@ public class Cat {
 
     @ManyToMany(targetEntity = Cat.class, fetch = FetchType.EAGER)
     @JoinTable(name="friends")
-    private Set<Cat> friends;
-
-    public String toString() {
-        String friendsStr = "";
-        for (Cat cat : friends) {
-            friendsStr += cat.getName() + ", ";
-        }
-        if (!friendsStr.isEmpty()) friendsStr = friendsStr.substring(0, friendsStr.length()-2);
-        return "Cat: name=" + name + ", dateOfBirth=" + dateOfBirth +
-                ", color=" + color + ", breed=" + breed +
-                ", owner=" + owner.getName() + ", friends=" + friendsStr;
-    }
+    private List<Cat> friends;
 }

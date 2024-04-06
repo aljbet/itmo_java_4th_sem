@@ -26,15 +26,15 @@ public class Presentation {
                 addNewOwner();
                 break;
             case "get all cats":
-                for (String cat : catService.getAllCats())
+                for (CatDto cat : catService.getAllCats())
                 {
-                    _textIO.getTextTerminal().println(cat);
+                    _textIO.getTextTerminal().println(cat.toString());
                 }
                 break;
             case "get all owners":
-                for (String owner : catService.getAllOwners())
+                for (OwnerDto owner : catService.getAllOwners())
                 {
-                    _textIO.getTextTerminal().println(owner);
+                    _textIO.getTextTerminal().println(owner.toString());
                 }
                 break;
             case "get cat by name":
@@ -75,7 +75,7 @@ public class Presentation {
             _textIO.getTextTerminal().println("That owner is not in database. Try again.");
             return;
         }
-        catService.addNewCat(name, dateOfBirth, breed, color, ownerName);
+        catService.addNewCat(new CatDto(name, dateOfBirth, breed, color, ownerName));
     }
 
     private static void addNewOwner() {
@@ -91,19 +91,19 @@ public class Presentation {
             _textIO.getTextTerminal().println("Invalid date. Try again.");
             return;
         }
-        catService.addNewOwner(name, dateOfBirth);
+        catService.addNewOwner(new OwnerDto(name, dateOfBirth));
     }
 
     private static void getCatByName() {
         String name = _textIO.newStringInputReader().read("Enter cat's name: ");
-        String res = catService.getCatByName(name);
-        _textIO.getTextTerminal().println(Objects.requireNonNullElse(res, "That cat is not in database."));
+        CatDto res = catService.getCatByName(name);
+        _textIO.getTextTerminal().println(Objects.requireNonNullElse(res.toString(), "That cat is not in database."));
     }
 
     private static void getOwnerByName() {
         String name = _textIO.newStringInputReader().read("Enter owner's name: ");
-        String res = catService.getOwnerByName(name);
-        _textIO.getTextTerminal().println(Objects.requireNonNullElse(res, "That owner is not in database."));
+        OwnerDto res = catService.getOwnerByName(name);
+        _textIO.getTextTerminal().println(Objects.requireNonNullElse(res.toString(), "That owner is not in database."));
     }
 
     private static void setFriendship() {
