@@ -2,6 +2,8 @@ public class Program
 {
     public static void main(String[] args)
     {
-        HelloPrinter.printHello();
+        Init.init();
+        Presentation.chooseAction();
+        System.exit(0);
     }
 }
