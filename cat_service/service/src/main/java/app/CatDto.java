@@ -1,3 +1,5 @@
+package app;
+
 import lombok.Data;
 
 import java.util.List;
@@ -38,8 +40,8 @@ public class CatDto {
 
     private List<String> friends;
 
-    public Cat getCat(OwnerDao ownerDao) {
-        Owner owner = ownerDao.getByName(ownerName);
+    public Cat getCat(OwnerRepository ownerRepository) {
+        Owner owner = ownerRepository.findOwnerByName(ownerName);
         return new Cat(name, dateOfBirth, color, breed, owner);
     }
 }

@@ -1,20 +1,26 @@
+package app;
+
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name = "owners")
 public class Owner {
+    public Owner() {
+        cats = new Vector<>();
+    }
     public Owner(String name, String dateOfBirth) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
+        cats = new Vector<>();
     }
 
-   @Id
+    @Id
     @GeneratedValue
     @Column(name = "id")
     private int id;
