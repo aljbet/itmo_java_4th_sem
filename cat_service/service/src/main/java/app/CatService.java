@@ -1,12 +1,12 @@
 package app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Vector;
 
-@Component
+@Service
 public class CatService implements ICatService
 {
     private final CatRepository catRepository;

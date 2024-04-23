@@ -3,7 +3,6 @@ package app;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 

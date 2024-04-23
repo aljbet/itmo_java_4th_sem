@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 @RestController
 public class CatController {
-    private ICatService catService;
+    private final ICatService catService;
     @Autowired
     public CatController(ICatService catService) {
         this.catService = catService;
