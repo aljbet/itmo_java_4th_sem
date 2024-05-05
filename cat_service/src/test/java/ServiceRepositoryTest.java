@@ -22,17 +22,6 @@ public class ServiceRepositoryTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"a,b"})
-    public void addNewOwnerTest(String ownerName, String dateOfBirth) {
-        CatService catService = new CatService(catRepository, ownerRepository);
-        OwnerDto owner = new OwnerDto(ownerName, dateOfBirth);
-
-        catService.addNewOwner(owner);
-
-        Mockito.verify(ownerRepository).save(owner.getOwner());
-    }
-
-    @ParameterizedTest
     @ValueSource(strings = {"a"})
     public void deleteCatTest(String name) {
         CatService catService = new CatService(catRepository, ownerRepository);
@@ -51,10 +40,10 @@ public class ServiceRepositoryTest {
         CatService catService = new CatService(catRepository, ownerRepository);
         Owner owner = new Owner();
 
-        Mockito.when(ownerRepository.findOwnerByName(name)).thenReturn(owner);
+        Mockito.when(ownerRepository.findOwnerByUsername(name)).thenReturn(owner);
         catService.deleteOwner(name);
 
-        Mockito.verify(ownerRepository).findOwnerByName(name);
+        Mockito.verify(ownerRepository).findOwnerByUsername(name);
         Mockito.verify(ownerRepository).delete(owner);
     }
 
@@ -83,7 +72,7 @@ public class ServiceRepositoryTest {
     public void getOwnerByNameTest() {
         CatService catService = new CatService(catRepository, ownerRepository);
         catService.getOwnerByName("a");
-        Mockito.verify(ownerRepository).findOwnerByName("a");
+        Mockito.verify(ownerRepository).findOwnerByUsername("a");
     }
 
     @ParameterizedTest

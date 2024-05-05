@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Vector;
 
 @Service
-public class CatService implements ICatService
-{
+public class CatService implements ICatService {
     private final CatRepository catRepository;
     private final OwnerRepository ownerRepository;
+
     @Autowired
     public CatService(CatRepository catRepository, OwnerRepository ownerRepository) {
         this.catRepository = catRepository;
@@ -23,15 +23,11 @@ public class CatService implements ICatService
     }
 
     @Override
-    public void addNewOwner(OwnerDto owner) {
-        ownerRepository.save(owner.getOwner());
-    }
-
-    @Override
     public void deleteCat(String name) {
         Cat cat = catRepository.findCatByName(name);
         if (cat == null) return;
-        for (Cat friend : cat.getFriends()) {
+        for (Cat friend : cat.getFriends())
+        {
             friend.getFriends().remove(cat);
         }
         catRepository.delete(cat);
@@ -39,9 +35,10 @@ public class CatService implements ICatService
 
     @Override
     public void deleteOwner(String name) {
-        Owner owner = ownerRepository.findOwnerByName(name);
+        Owner owner = ownerRepository.findOwnerByUsername(name);
         if (owner == null) return;
-        for (Cat cat : owner.getCats()) {
+        for (Cat cat : owner.getCats())
+        {
             deleteCat(cat.getName());
         }
         ownerRepository.delete(owner);
@@ -51,6 +48,55 @@ public class CatService implements ICatService
     public List<CatDto> getAllCats() {
         Vector<CatDto> res = new Vector<>();
         for (Cat cat : catRepository.findAll()) res.add(new CatDto(cat));
+        return res;
+    }
+
+    @Override
+    public List<CatDto> getAllCatsByOwner(String ownerName) {
+        Vector<CatDto> res = new Vector<>();
+        for (Cat cat : catRepository.findAll())
+            if (cat.getOwner().getUsername().equals(ownerName))
+            {
+                res.add(new CatDto(cat));
+            }
+        return res;
+    }
+
+    @Override
+    public List<CatDto> getAllCatsByBreed(String breed) {
+        Vector<CatDto> res = new Vector<>();
+        for (Cat cat : catRepository.findCatsByBreed(breed))
+            res.add(new CatDto(cat));
+        return res;
+    }
+
+    @Override
+    public List<CatDto> getAllCatsByColor(String color) {
+        Vector<CatDto> res = new Vector<>();
+        for (Cat cat : catRepository.findCatsByColor(color))
+            res.add(new CatDto(cat));
+        return res;
+    }
+
+    @Override
+    public List<CatDto> getAllCatsByBreedAndOwner(String breed, String ownerName) {
+        Vector<CatDto> res = new Vector<>();
+        for (Cat cat : catRepository.findCatsByBreed(breed))
+            if (cat.getOwner().getUsername().equals(ownerName))
+            {
+                res.add(new CatDto(cat));
+            }
+        return res;
+    }
+
+    @Override
+    public List<CatDto> getAllCatsByColorAndOwner(String color, String ownerName) {
+        Vector<CatDto> res = new Vector<>();
+        for (Cat cat : catRepository.findCatsByColor(color))
+            if (cat.getOwner().getUsername().equals(ownerName))
+            {
+                res.add(new CatDto(cat));
+            }
         return res;
     }
 
@@ -70,7 +116,7 @@ public class CatService implements ICatService
 
     @Override
     public OwnerDto getOwnerByName(String name) {
-        Owner owner = ownerRepository.findOwnerByName(name);
+        Owner owner = ownerRepository.findOwnerByUsername(name);
         if (owner == null) return null;
         return new OwnerDto(owner);
     }

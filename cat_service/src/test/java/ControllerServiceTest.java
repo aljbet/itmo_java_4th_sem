@@ -6,12 +6,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 
 public class ControllerServiceTest {
+    private final AuthService authService = Mockito.mock(AuthService.class);
     private final CatService catService = Mockito.mock(CatService.class);
+    private final OwnerService ownerService = Mockito.mock(OwnerService.class);
 
     @ParameterizedTest
     @ValueSource(strings = {"01.01.2020"})
     public void addCatTest(String date) {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
         CatDto cat = new CatDto("a", date, "c", "d", "e");
 
         catController.addCat(cat);
@@ -22,7 +24,7 @@ public class ControllerServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {"asc", "01:01:2020", "01.01.2040"})
     public void addCatWithInvalidDateTest(String date) {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
         CatDto cat = new CatDto("a", date, "c", "d", "e");
 
         catController.addCat(cat);
@@ -33,29 +35,29 @@ public class ControllerServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {"01.01.2001"})
     public void addOwnerTest(String date) {
-        CatController catController = new CatController(catService);
-        OwnerDto owner = new OwnerDto("a", date);
+        CatController catController = new CatController(authService, catService, ownerService);
+        OwnerDto owner = new OwnerDto("a", date, "123");
 
         catController.addOwner(owner);
 
-        Mockito.verify(catService).addNewOwner(owner);
+        Mockito.verify(ownerService).addNewOwner(owner);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"asc", "01:01:2020", "01.01.2040"})
     public void addOwnerWithInvalidDateTest(String date) {
-        CatController catController = new CatController(catService);
-        OwnerDto owner = new OwnerDto("a", date);
+        CatController catController = new CatController(authService, catService, ownerService);
+        OwnerDto owner = new OwnerDto("a", date, "123");
 
         catController.addOwner(owner);
 
-        Mockito.verify(catService, Mockito.never()).addNewOwner(owner);
+        Mockito.verify(ownerService, Mockito.never()).addNewOwner(owner);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"name"})
     public void deleteCatTest(String name) {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
 
         catController.deleteCat(name);
 
@@ -65,7 +67,7 @@ public class ControllerServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {"name"})
     public void deleteOwnerTest(String name) {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
 
         catController.deleteOwner(name);
 
@@ -74,7 +76,7 @@ public class ControllerServiceTest {
 
     @Test
     public void getAllCatsTest() {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
 
         catController.getAllCats();
 
@@ -83,7 +85,7 @@ public class ControllerServiceTest {
 
     @Test
     public void getAllOwnersTest() {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
 
         catController.getAllOwners();
 
@@ -93,7 +95,7 @@ public class ControllerServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {"name"})
     public void getCatByNameTest(String name) {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
 
         catController.getCatByName(name);
 
@@ -103,7 +105,7 @@ public class ControllerServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {"name"})
     public void getOwnerByNameTest(String name) {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
 
         catController.getOwnerByName(name);
 
@@ -113,7 +115,7 @@ public class ControllerServiceTest {
     @ParameterizedTest
     @CsvSource({"cat1, cat2"})
     public void setFriendshipTest(String name1, String name2) {
-        CatController catController = new CatController(catService);
+        CatController catController = new CatController(authService, catService, ownerService);
 
         catController.setFriendship(name1, name2);
 

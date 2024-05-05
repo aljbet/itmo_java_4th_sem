@@ -12,7 +12,7 @@ public class CatDto {
         this.dateOfBirth = cat.getDateOfBirth();
         this.color = cat.getColor();
         this.breed = cat.getBreed();
-        this.ownerName = cat.getOwner().getName();
+        this.ownerName = cat.getOwner().getUsername();
         this.friends = new Vector<>();
         for (Cat friend : cat.getFriends())
         {
@@ -41,7 +41,7 @@ public class CatDto {
     private List<String> friends;
 
     public Cat getCat(OwnerRepository ownerRepository) {
-        Owner owner = ownerRepository.findOwnerByName(ownerName);
+        Owner owner = ownerRepository.findOwnerByUsername(ownerName);
         return new Cat(name, dateOfBirth, color, breed, owner);
     }
 }

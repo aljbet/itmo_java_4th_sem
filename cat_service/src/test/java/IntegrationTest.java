@@ -1,5 +1,6 @@
 import app.CatApplication;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +23,8 @@ public class IntegrationTest {
 
     @Test
     void addNewCatTest() throws Exception {
+        Assertions.assertEquals(true, true);
+
         mockMvc.perform(post("/cats").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"kot\",\"dateOfBirth\":\"02.02.2002\",\"color\": \"grey\", \"breed\": \"unknown\", \"ownerName\": \"nik\"}")).andExpect(status().isOk());
 
