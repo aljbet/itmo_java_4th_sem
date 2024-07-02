@@ -1,0 +1,4 @@
+rootProject.name = 'owner_microservice'
+include 'service'
+include 'service'
+
